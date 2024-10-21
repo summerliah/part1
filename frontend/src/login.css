@@ -1,44 +1,147 @@
+/* Apply a gradient background to the page */
+body {
+  background: linear-gradient(
+      135deg,
+      rgba(108, 159, 235, 0.8),
+      rgba(255, 255, 255, 0.8)
+    ),
+    /* Base gradient */
+      repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1) 0px,
+        rgba(255, 255, 255, 0.1) 5px,
+        rgba(0, 0, 0, 0.05) 5px,
+        rgba(0, 0, 0, 0.05) 10px
+      ); /* Textured stripes */
+  background-size: cover;
+  background-blend-mode: overlay; /* Combine the gradient and pattern */
+  font-family: "Roboto", sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
 .login-container {
-  max-width: 400px; /* Maximum width for the login form */
-  margin: 0 auto; /* Center the container */
-  padding: 2rem; /* Padding inside the container */
-  background-color: #fff; /* White background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  text-align: center; /* Center text */
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-input {
-  width: 100%; /* Full width for inputs */
-  padding: 0.75rem; /* Padding inside inputs */
-  margin-bottom: 1rem; /* Space below each input */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 4px; /* Rounded corners */
+.login-container:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-select {
-  width: 100%; /* Full width for select */
-  padding: 0.75rem; /* Padding inside select */
-  margin-bottom: 1rem; /* Space below select */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 4px; /* Rounded corners */
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #333;
 }
 
+/* Ensure consistent sizing of input, select, and button fields */
+input,
+select,
 button {
-  width: 100%; /* Full width for button */
-  padding: 0.75rem; /* Padding inside button */
-  background-color: #007bff; /* Primary button color */
-  color: white; /* White text color */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Input fields styling */
+input {
+  padding: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Role selection specific styling */
+select {
+  padding: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  transition: border-color 0.3s ease;
+  background-color: #fff;
+}
+
+select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+select[value="admin"] {
+  border: 1px solid #ff9800;
+  background-color: #fff7e6;
+}
+
+select[value="user"] {
+  border: 1px solid #007bff;
+}
+
+/* Button with gradient and hover effects */
+button {
+  padding: 1rem;
+  background: linear-gradient(90deg, #007bff, #66b2ff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-bottom: 1.5rem; /* Add margin to create space between buttons */
 }
 
 button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background: #0056b3;
+  transform: scale(1.07);
 }
 
+button:active {
+  background: #003f7f;
+}
+
+/* Additional Register button styling */
+.register-btn {
+  background: linear-gradient(
+    90deg,
+    #28a745,
+    #70d467
+  ); /* Different gradient for register button */
+}
+
+.register-btn:hover {
+  background: #218838; /* Darker green on hover */
+}
+
+.register-btn:active {
+  background: #1e7e34;
+}
+
+/* Error message styling */
 p {
-  margin-top: 1rem; /* Space above message */
-  color: #ff0000; /* Red color for error messages */
+  margin-top: 1.5rem;
+  color: #ff4d4d;
+  font-size: 1.1rem;
+}
+
+p.success {
+  color: #28a745;
+  font-size: 1.1rem;
 }

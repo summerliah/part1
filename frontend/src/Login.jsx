@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Importing your CSS file
 
 const Login = ({ onLogin }) => {
-  // Receive onLogin as a prop
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user"); // Default role is user
@@ -36,14 +36,20 @@ const Login = ({ onLogin }) => {
       setMessage("An error occurred");
     }
 
+    // Clear form fields after submission
     setUsername("");
     setPassword("");
+  };
+
+  const handleRegister = () => {
+    navigate("/register"); // Assuming there's a /register route for the registration page
   };
 
   return (
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
+        {/* Username Input */}
         <input
           type="text"
           placeholder="Username"
@@ -51,6 +57,7 @@ const Login = ({ onLogin }) => {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
+        {/* Password Input */}
         <input
           type="password"
           placeholder="Password"
@@ -58,12 +65,19 @@ const Login = ({ onLogin }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {/* Role selection */}
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
+        {/* Login Button */}
         <button type="submit">Login</button>
       </form>
+      {/* Register Button */}
+      <button type="button" className="register-btn" onClick={handleRegister}>
+        Register
+      </button>
+      {/* Display message */}
       {message && <p>{message}</p>}
     </div>
   );
