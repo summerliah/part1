@@ -1,13 +1,101 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+/* Enhanced login form container */
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: transparent;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(252, 252, 252, 0.978);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  position: relative;
+}
+
+/* Background gradient */
+body {
+  background: url('./assets/Home (1).png') no-repeat center center fixed; /* Set PNG background */
+  background-size: cover; /* Ensure the image covers the entire background */
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+
+/* Input styles */
+input, select {
+  width: 90%;
+  padding: 0.85rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #fdfdfd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+  color: #fffcfc; /* Darker text for better readability */
+}
+
+input:focus, select:focus {
+  border-color: #007bff; /* Blue border when focused */
+  background-color: #fff; /* Pure white background on focus */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); /* Stronger shadow to highlight focus */
+  outline: none; /* Remove default browser outline */
+}
+input:hover, select:hover {
+  background-color: #121111; /* Slightly darker background on hover */
+  border-color: #bbb; /* Darker border on hover */
+}
+
+
+/* Button styles */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Error message */
+p {
+  margin-top: 1rem;
+  color: #ff4d4d;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Adding smooth transitions */
+input, select, button {
+  transition: all 0.3s ease;
+}
+select {
+  appearance: none; /* Remove default arrow styling */
+  background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="#007bff" d="M2 0L0 2h4z"/></svg>') no-repeat right 1rem center;
+  background-size: 10px 10px; /* Custom arrow icon */
+}
