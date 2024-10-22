@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css"; // Importing your CSS file
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(""); // Email state
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // Default role is user
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
@@ -19,14 +18,14 @@ const Login = ({ onLogin }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password, role }),
+        body: JSON.stringify({ email, password }), // Removed role from payload
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setMessage(data.message);
-        onLogin(role); // Call onLogin from props to update the App component state
+        onLogin(); // Call onLogin without role to update the App component state
         navigate("/app"); // Navigate to the App component
       } else {
         setMessage(data.message);
@@ -37,7 +36,7 @@ const Login = ({ onLogin }) => {
     }
 
     // Clear form fields after submission
-    setUsername("");
+    setEmail(""); // Clear email field
     setPassword("");
   };
 
@@ -49,12 +48,12 @@ const Login = ({ onLogin }) => {
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        {/* Username Input */}
+        {/* Email Input */}
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email" // Input type changed to email
+          placeholder="Email" // Changed placeholder to Email
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         {/* Password Input */}
@@ -65,11 +64,6 @@ const Login = ({ onLogin }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {/* Role selection */}
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
         {/* Login Button */}
         <button type="submit">Login</button>
       </form>

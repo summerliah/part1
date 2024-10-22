@@ -1,27 +1,23 @@
 const express = require("express");
-
 const mysql = require("mysql");
-
 const cors = require("cors");
-
 const bodyParser = require("body-parser");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const app = express();
+const JWT_SECRET = "your_jwt_secret_key"; // Define your JWT secret key
 
 app.use(cors());
-
 app.use(bodyParser.json());
 
 // MySQL connection
-
 const db = mysql.createConnection({
   host: "localhost",
-
-  user: "root",
-
-  port: "3307",
-
-  database: "task_management",
+  user: "root", // Your MySQL username
+  password: "", // Your MySQL password if set
+  port: "3306", // Default MySQL port for XAMPP
+  database: "task_management", // Your database name
 });
 
 db.connect((err) => {
@@ -32,83 +28,67 @@ db.connect((err) => {
   }
 });
 
-// Login route
+// Registration endpoint
+app.post("/register", (req, res) => {
+  const { username, email, password, role } = req.body;
+
+  // Validate fields
+  if (!username || !email || !password || !role) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // Hash the password
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) return res.status(500).json({ message: "Error hashing password" });
+
+    const sql =
+      "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
+    db.query(sql, [username, email, hashedPassword, role], (error, result) => {
+      if (error)
+        return res.status(500).json({ message: "Error registering user" });
+
+      res.status(200).json({ message: "User registered successfully!" });
+    });
+  });
+});
+
+// Login endpoint
 app.post("/login", (req, res) => {
-  const { username, password, role } = req.body;
+  const { email, password } = req.body;
 
-  const sql =
-    "SELECT * FROM users WHERE username = ? AND password = ? AND role = ?";
-  db.query(sql, [username, password, role], (err, result) => {
-    if (err) {
-      res.status(500).json({ message: "Database query error" });
-    } else if (result.length > 0) {
-      res.json({ message: `Welcome ${role}!` });
-    } else {
-      res.status(401).json({ message: "Invalid username or password" });
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
+  const sql = "SELECT * FROM users WHERE email = ?";
+  db.query(sql, [email], async (err, result) => {
+    if (err) throw err;
+
+    if (result.length === 0) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
+
+    const user = result[0];
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role }, // Include user role
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.json({ message: "Login successful", token, role: user.role });
   });
 });
 
-// Get all students
-
-app.get("/students", (req, res) => {
-  const sql = "SELECT * FROM students";
-
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-
-    res.json(result);
-  });
-});
-
-// Add a new student
-
-app.post("/students", (req, res) => {
-  const { task_title, task_description } = req.body;
-
-  const sql =
-    "INSERT INTO students (task_title, task_description) VALUES (?, ?)";
-
-  db.query(sql, [task_title, task_description], (err, result) => {
-    if (err) throw err;
-
-    res.json({ id: result.insertId, ...req.body });
-  });
-});
-
-// Update a student
-
-app.put("/students/:id", (req, res) => {
-  const { id } = req.params;
-
-  const { task_title, task_description } = req.body;
-
-  const sql =
-    "UPDATE students SET task_title = ?, task_description = ? WHERE id = ?";
-
-  db.query(sql, [task_title, task_description, id], (err, result) => {
-    if (err) throw err;
-
-    res.json(result);
-  });
-});
-
-// Delete a student
-
-app.delete("/students/:id", (req, res) => {
-  const { id } = req.params;
-
-  const sql = "DELETE FROM students WHERE id = ?";
-
-  db.query(sql, [id], (err, result) => {
-    if (err) throw err;
-
-    res.json(result);
-  });
-});
+// Other endpoints (students, etc.) here...
 
 // Start the server
-
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });

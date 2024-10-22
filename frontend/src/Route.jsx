@@ -1,14 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./Login"; // Import your Login component
-import App from "./App"; // Import the component you want to navigate to
+import Login from "./Login";
+import Register from "./Register";
+import App from "./App"; // Assuming App is your protected component
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/app" element={<App />} />{" "}
-      {/* Corrected route to match App component */}
+      <Route path="/register" element={<Register />} />
+      <Route path="/app" element={<App />} /> {/* Protected route */}
     </Routes>
   );
 };
